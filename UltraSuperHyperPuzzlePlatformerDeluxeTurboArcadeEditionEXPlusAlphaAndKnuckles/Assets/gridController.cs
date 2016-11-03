@@ -71,9 +71,9 @@ public class gridController : MonoBehaviour {
     /// </summary>
     void CreateGrid()
     {
-        for (int y = 0; y < startWidth; y++)
+        for (int y = 0; y < startHeight; y++)
         {
-            for (int x = 0; x < startHeight; x++)
+            for (int x = 0; x < startWidth; x++)
             {
                 Vector3 placement = ConvertToWorld(x, y);
                 GameObject newBlock = (GameObject)Instantiate(block, placement, Quaternion.identity);
