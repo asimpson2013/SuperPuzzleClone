@@ -1,2 +1,6 @@
+<<<<<<< master
 m_EditorVersion: 5.0.0f4
+=======
+m_EditorVersion: 5.4.0f3
+>>>>>>> Fixed the player controller
 m_StandardAssetsVersion: 0
