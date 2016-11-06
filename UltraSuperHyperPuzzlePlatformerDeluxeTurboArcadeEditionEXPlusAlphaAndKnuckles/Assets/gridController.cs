@@ -4,12 +4,18 @@ using System.Collections;
 /// <summary>
 /// Controls the grid
 /// </summary>
-public class gridController : MonoBehaviour {
+public class gridController : MonoBehaviour
+{
 
+    #region Static Variables
     /// <summary>
     /// refrence to the block sprite
     /// </summary>
     public GameObject block;
+    /// <summary>
+    /// The pixel measurement per one unit.
+    /// </summary>
+    static float perUnit;
     /// <summary>
     /// A two dimensional array that stores blocks in a grid
     /// </summary>
@@ -38,13 +44,13 @@ public class gridController : MonoBehaviour {
     /// Where the blocks start on the screen in the y direction
     /// </summary>
     static float startY = -2;
+    #endregion
 
     #region public vars
     //Unsure if we will keep these so they are staying uncommented
     public int startWidth = 9;
     public int startHeight = 1;
-    public float pblockWidth = 0;
-    public float pblockHeight = 0;
+    public float pixelsPerUnit = 32;
     public float pstartX = 0;
     public float pstartY = 0;
     public int pgridWidth = 0;
@@ -52,19 +58,21 @@ public class gridController : MonoBehaviour {
     #endregion
 
     /// <summary>
-	/// Adds a grid to the scene
-	/// </summary>
-	void Start () 
+    /// Adds a grid to the scene
+    /// </summary>
+    void Start()
     {
+        //Maybe get the height and width of the screen and calculate a grid width and height that way?
         gridWidth = pgridWidth;
         gridHeight = pgridHeight;
-        blockWidth = pblockWidth;
-        blockHeight = pblockHeight;
+        perUnit = pixelsPerUnit;
+        blockWidth = block.GetComponent<SpriteRenderer>().sprite.rect.size.x;
+        blockHeight = block.GetComponent<SpriteRenderer>().sprite.rect.size.y;
         startX = pstartX;
         startY = pstartY;
         grid = new GameObject[gridHeight, gridWidth];
         CreateGrid();
-	}
+    }
 
     /// <summary>
     /// Makes a grid of blocks and instantiates it
@@ -112,8 +120,8 @@ public class gridController : MonoBehaviour {
     /// <returns>The world point equivalent to the grid point</returns>
     public static Vector3 ConvertToWorld(int X, int Y)
     {
-        float worldX = startX + (X * blockWidth / 2f);
-        float worldY = startY + (Y * blockHeight / 2f);
+        float worldX = startX + (X * (blockWidth / perUnit));
+        float worldY = startY + (Y * (blockHeight / blockHeight));
         Vector3 worldCoord = new Vector3(worldX, worldY, 0);
         return worldCoord;
     }
@@ -126,8 +134,8 @@ public class gridController : MonoBehaviour {
     /// <returns>The grid point equivalent to the world point</returns>
     public static Vector2 ConvertToGrid(float worldX, float worldY)
     {
-        int X = (int)Mathf.Ceil((worldX / (blockWidth) * 2f) - startX);
-        int Y = (int)Mathf.Ceil((worldY / (blockHeight) * 2f) - startY);
+        int X = (int)Mathf.Ceil((worldX / (blockWidth / perUnit)) - startX);
+        int Y = (int)Mathf.Ceil((worldY / (blockHeight / perUnit)) - startY);
         Vector2 gridCoord = new Vector2(X, Y);
         return gridCoord;
     }

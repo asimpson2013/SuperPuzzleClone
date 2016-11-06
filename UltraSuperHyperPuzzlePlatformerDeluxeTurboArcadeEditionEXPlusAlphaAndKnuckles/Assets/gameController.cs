@@ -4,7 +4,8 @@ using System.Collections;
 /// <summary>
 /// Controlls when and where blocks fall
 /// </summary>
-public class gameController : MonoBehaviour {
+public class gameController : MonoBehaviour
+{
 
     /// <summary>
     /// How long until blocks start to fall
@@ -32,11 +33,11 @@ public class gameController : MonoBehaviour {
         this.gridHeight = gridController.gridHeight;
         timer = timerStart;
     }
-	
-	/// <summary>
-	/// Adds a block once the timer is finished and restarts the timer
-	/// </summary>
-	void Update () 
+
+    /// <summary>
+    /// Adds a block once the timer is finished and restarts the timer
+    /// </summary>
+    void Update()
     {
         if (timer <= 0)
         {
@@ -44,7 +45,7 @@ public class gameController : MonoBehaviour {
             timer = timerStart;
         }
         timer -= Time.deltaTime;
-	}
+    }
 
     /// <summary>
     /// Adds a block to a random x location off the screen
