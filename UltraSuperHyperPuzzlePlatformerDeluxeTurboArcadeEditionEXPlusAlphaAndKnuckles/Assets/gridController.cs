@@ -111,6 +111,11 @@ public class gridController : MonoBehaviour
         grid[y, x] = block;
     }
 
+    /// <summary>
+    /// Removes a gameobject from the grid array
+    /// </summary>
+    /// <param name="Y">The y position of the object in the grid</param>
+    /// <param name="X">The x position of the object in the grid</param>
     public static void removeFromGrid(int Y, int X)
     {
         grid[Y, X] = null;

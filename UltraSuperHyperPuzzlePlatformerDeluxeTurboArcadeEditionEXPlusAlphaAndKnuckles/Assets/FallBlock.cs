@@ -26,6 +26,7 @@ public class FallBlock : MonoBehaviour
             gravity += gravity * Time.deltaTime;
             transform.position -= new Vector3(0, gravity, 0);
         }
+        //DetectBelow();
     }
 
     /// <summary>
@@ -39,5 +40,19 @@ public class FallBlock : MonoBehaviour
         Vector3 newPos = gridController.ConvertToWorld((int)gridPlace.x, (int)gridPlace.y);
         transform.position = newPos;
         gridController.addToGrid((int)gridPlace.y, (int)gridPlace.x, this.gameObject);
+    }
+
+    /// <summary>
+    /// Checks for a block below
+    /// </summary>
+    void DetectBelow()
+    {
+        int gridX = GetComponent<BlockColor>().gridX;
+        int gridY = GetComponent<BlockColor>().gridY;
+        GameObject[,] copyGrid = gridController.grid;
+        if(gridY - 1 > -1 && copyGrid[gridY -1, gridX] == null)
+        {
+            fall = true;
+        }
     }
 }

@@ -23,10 +23,8 @@ public class gameController : MonoBehaviour
     /// Height of the grid
     /// </summary>
     int gridHeight = 0;
-    /// <summary>
-    /// Whether or not the block is already in the array of checked colors
-    /// </summary>
-    bool inArray = false;
+    //Testing variable will delete later
+    float prevPress = 0;
 
     /// <summary>
     /// Sets grid width, grid height and starts timer
@@ -48,17 +46,21 @@ public class gameController : MonoBehaviour
         //    AddBlocks();
         //    timer = timerStart;
         //}
-        if (Input.GetAxis("Submit") == 1)
+
+        //Testing statment will delete later
+        if (Input.GetAxis("Submit") != prevPress && Input.GetAxis("Submit") > 0)
         {
             ArrayList matchBlocks = CheckBlocks(0, 0);
             for (int i = 0; i < matchBlocks.Count; i++)
             {
                 GameObject block = (GameObject)matchBlocks[i];
-                gridController.removeFromGrid(block.GetComponent<BlockColor>().gridY, block.GetComponent<BlockColor>().gridX);
-                Destroy(block.gameObject);
+                //gridController.removeFromGrid(block.GetComponent<BlockColor>().gridY, block.GetComponent<BlockColor>().gridX);
+                //Destroy(block.gameObject);
+                block.GetComponent<SpriteRenderer>().color = Color.red;
             }
         }
-        timer -= Time.deltaTime;
+        prevPress = Input.GetAxis("Submit");
+        //timer -= Time.deltaTime;
     }
 
     /// <summary>
@@ -85,48 +87,48 @@ public class gameController : MonoBehaviour
         ArrayList matchBlocks = new ArrayList();
         GameObject[,] copyGrid = gridController.grid;
         GameObject block = copyGrid[Y, X];
+        string blockColor = null;
+
+        blockColor = block.GetComponent<BlockColor>().color;
         matchBlocks.Add(block);
         //When introducing Hazards we will have to add another statement to damage those as well when a block around it is being hit.
         for (int i = 0; i <= matchBlocks.Count - 1; i++)
         {
             block = (GameObject)matchBlocks[i];
-            string blockColor = block.GetComponent<BlockColor>().color;
             int gridX = block.GetComponent<BlockColor>().gridX;
             int gridY = block.GetComponent<BlockColor>().gridY;
             GameObject blockUp = BlockExists(gridX, gridY + 1, matchBlocks);
             GameObject blockDown = BlockExists( gridX, gridY - 1 ,matchBlocks);
             GameObject blockRight = BlockExists( gridX + 1, gridY, matchBlocks);
             GameObject blockLeft = BlockExists( gridX - 1, gridY, matchBlocks);
-            print(blockColor);
 
             if (blockUp != null && blockUp.GetComponent<BlockColor>().color == blockColor)
             {
-                print(blockUp.GetComponent<BlockColor>().color);
-                print(blockUp.GetComponent<BlockColor>().color == blockColor);
                 matchBlocks.Add(copyGrid[gridY + 1, gridX]);
             }
             if (blockDown != null && blockDown.GetComponent<BlockColor>().color == blockColor)
             {
-                print(blockDown.GetComponent<BlockColor>().color);
-                print(blockDown.GetComponent<BlockColor>().color == blockColor);
                 matchBlocks.Add(copyGrid[gridY - 1, gridX]);
             }
             if (blockRight != null && blockRight.GetComponent<BlockColor>().color == blockColor)
             {
-                print(blockRight.GetComponent<BlockColor>().color);
-                print(blockRight.GetComponent<BlockColor>().color == blockColor);
                 matchBlocks.Add(copyGrid[gridY, gridX + 1]);
             }
             if (blockLeft != null && blockLeft.GetComponent<BlockColor>().color == blockColor)
             {
-                print(blockLeft.GetComponent<BlockColor>().color);
-                print(blockLeft.GetComponent<BlockColor>().color == blockColor);
                 matchBlocks.Add(copyGrid[gridY, gridX - 1]);
             }
         }
         return matchBlocks;
     }
 
+    /// <summary>
+    /// Checks to see if the block being checked is part of the grid and if the block is already part of the matchblocks array
+    /// </summary>
+    /// <param name="gridX">The grid x-position being checked</param>
+    /// <param name="gridY">The grid y-position being checked</param>
+    /// <param name="matchBlocks"></param>
+    /// <returns>null if the block is already in the matchblocks array and the block being checked if the block isn't in the array</returns>
     GameObject BlockExists(int gridX, int gridY, ArrayList matchBlocks)
     {
         int YMax = gridController.gridHeight;
@@ -135,22 +137,22 @@ public class gameController : MonoBehaviour
 
         if (gridX < XMax && gridX > -1 && gridY < YMax && gridY > -1)
         {
-            GameObject block = gridController.grid[gridX, gridY];
-            for (int j = 0; j < matchBlocks.Count; j++)
+            GameObject block = gridController.grid[gridY, gridX];
+            for (int j = 0; j <= matchBlocks.Count - 1; j++)
             {
                 GameObject prevBlock = (GameObject)matchBlocks[j];
                 int prevBlockX = prevBlock.GetComponent<BlockColor>().gridX;
                 int prevBlockY = prevBlock.GetComponent<BlockColor>().gridY;
-                if (gridX != prevBlockX && !inArray)
+                if (gridX == prevBlockX && !inArray)
                 {
-                    if (gridY != prevBlockY)
+                    if (gridY == prevBlockY)
                     {
-                        print("here?");
                         inArray = true;
                     }
                     
                 }
             }
+
             if(!inArray)
             {
                 return block;
