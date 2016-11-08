@@ -26,7 +26,7 @@ public class FallBlock : MonoBehaviour
             gravity += gravity * Time.deltaTime;
             transform.position -= new Vector3(0, gravity, 0);
         }
-        //DetectBelow();
+        DetectBelow();
     }
 
     /// <summary>
@@ -53,6 +53,7 @@ public class FallBlock : MonoBehaviour
         if(gridY - 1 > -1 && copyGrid[gridY -1, gridX] == null)
         {
             fall = true;
+            gridController.removeFromGrid(gridY, gridX);
         }
     }
 }

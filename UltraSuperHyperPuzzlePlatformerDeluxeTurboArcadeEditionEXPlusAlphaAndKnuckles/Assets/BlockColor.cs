@@ -14,7 +14,13 @@ public class BlockColor : MonoBehaviour {
     /// A reference to the color the block is
     /// </summary>
     public string color;
+    /// <summary>
+    /// The x-coordinate of the block on the grid array
+    /// </summary>
     public int gridX;
+    /// <summary>
+    /// The y coordinat of the block on the grid array
+    /// </summary>
     public int gridY;
 
     /// <summary>
@@ -22,10 +28,26 @@ public class BlockColor : MonoBehaviour {
     /// </summary>
     void Start()
     {
+        UpdateGridPlace();
+        PickColor();
+    }
+
+    /// <summary>
+    /// Makes sure grid placement is correct
+    /// </summary>
+    void Update()
+    {
+        UpdateGridPlace();
+    }
+
+    /// <summary>
+    /// Initializes the grid placement of each block
+    /// </summary>
+    private void UpdateGridPlace()
+    {
         Vector2 gridPlace = gridController.ConvertToGrid(transform.position.x, transform.position.y);
         gridX = (int)gridPlace.x;
         gridY = (int)gridPlace.y;
-        PickColor();
     }
 
     /// <summary>

@@ -54,9 +54,8 @@ public class gameController : MonoBehaviour
             for (int i = 0; i < matchBlocks.Count; i++)
             {
                 GameObject block = (GameObject)matchBlocks[i];
-                //gridController.removeFromGrid(block.GetComponent<BlockColor>().gridY, block.GetComponent<BlockColor>().gridX);
-                //Destroy(block.gameObject);
-                block.GetComponent<SpriteRenderer>().color = Color.red;
+                gridController.removeFromGrid(block.GetComponent<BlockColor>().gridY, block.GetComponent<BlockColor>().gridX);
+                Destroy(block.gameObject);
             }
         }
         prevPress = Input.GetAxis("Submit");
