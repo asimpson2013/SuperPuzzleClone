@@ -111,6 +111,23 @@ public class gridController : MonoBehaviour
         grid[y, x] = block;
     }
 
+    public static void removeFromGrid(int Y, int X)
+    {
+        grid[Y, X] = null;
+        GameObject[,] newGrid = new GameObject[gridHeight, gridWidth];
+        for (int y = 0; y < gridHeight; y++)
+        {
+            for (int x = 0; x < gridWidth; x++)
+            {
+                if (grid[y, x] != null)
+                {
+                    newGrid[y, x] = grid[y, x];
+                }
+            }
+        }
+        grid = newGrid;
+    }
+
     #region Conversions
     /// <summary>
     /// Converts the grid coordinates to world coordinates

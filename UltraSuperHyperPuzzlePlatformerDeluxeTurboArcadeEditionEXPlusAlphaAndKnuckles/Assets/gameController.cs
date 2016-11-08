@@ -23,6 +23,10 @@ public class gameController : MonoBehaviour
     /// Height of the grid
     /// </summary>
     int gridHeight = 0;
+    /// <summary>
+    /// Whether or not the block is already in the array of checked colors
+    /// </summary>
+    bool inArray = false;
 
     /// <summary>
     /// Sets grid width, grid height and starts timer
@@ -39,10 +43,20 @@ public class gameController : MonoBehaviour
     /// </summary>
     void Update()
     {
-        if (timer <= 0)
+        //if (timer <= 0)
+        //{
+        //    AddBlocks();
+        //    timer = timerStart;
+        //}
+        if (Input.GetAxis("Submit") == 1)
         {
-            AddBlocks();
-            timer = timerStart;
+            ArrayList matchBlocks = CheckBlocks(0, 0);
+            for (int i = 0; i < matchBlocks.Count; i++)
+            {
+                GameObject block = (GameObject)matchBlocks[i];
+                gridController.removeFromGrid(block.GetComponent<BlockColor>().gridY, block.GetComponent<BlockColor>().gridX);
+                Destroy(block.gameObject);
+            }
         }
         timer -= Time.deltaTime;
     }
@@ -69,32 +83,79 @@ public class gameController : MonoBehaviour
     ArrayList CheckBlocks(int X, int Y)
     {
         ArrayList matchBlocks = new ArrayList();
-        GameObject block = gridController.grid[Y, X];
-        GameObject blockUp = gridController.grid[Y + 1, X];
-        GameObject blockDown = gridController.grid[Y - 1, X];
-        GameObject blockLeft = gridController.grid[Y, X - 1];
-        GameObject blockRight = gridController.grid[Y, X + 1];
-        string blockColor = gridController.grid[Y, X].GetComponent<BlockColor>().color;
-
+        GameObject[,] copyGrid = gridController.grid;
+        GameObject block = copyGrid[Y, X];
         matchBlocks.Add(block);
-        //When introducing Hazards we will have to add another statement here to damage those as well when a block around it is being hit.
-        //This also needs to check more than just the surrounding blocks
-        if (blockUp.GetComponent<BlockColor>().color == blockColor)
+        //When introducing Hazards we will have to add another statement to damage those as well when a block around it is being hit.
+        for (int i = 0; i <= matchBlocks.Count - 1; i++)
         {
-            matchBlocks.Add(blockUp);
-        }
-        if (blockDown.GetComponent<BlockColor>().color == blockColor)
-        {
-            matchBlocks.Add(blockDown);
-        }
-        if (blockLeft.GetComponent<BlockColor>().color == blockColor)
-        {
-            matchBlocks.Add(blockLeft);
-        }
-        if (blockRight.GetComponent<BlockColor>().color == blockColor)
-        {
-            matchBlocks.Add(blockRight);
+            block = (GameObject)matchBlocks[i];
+            string blockColor = block.GetComponent<BlockColor>().color;
+            int gridX = block.GetComponent<BlockColor>().gridX;
+            int gridY = block.GetComponent<BlockColor>().gridY;
+            GameObject blockUp = BlockExists(gridX, gridY + 1, matchBlocks);
+            GameObject blockDown = BlockExists( gridX, gridY - 1 ,matchBlocks);
+            GameObject blockRight = BlockExists( gridX + 1, gridY, matchBlocks);
+            GameObject blockLeft = BlockExists( gridX - 1, gridY, matchBlocks);
+            print(blockColor);
+
+            if (blockUp != null && blockUp.GetComponent<BlockColor>().color == blockColor)
+            {
+                print(blockUp.GetComponent<BlockColor>().color);
+                print(blockUp.GetComponent<BlockColor>().color == blockColor);
+                matchBlocks.Add(copyGrid[gridY + 1, gridX]);
+            }
+            if (blockDown != null && blockDown.GetComponent<BlockColor>().color == blockColor)
+            {
+                print(blockDown.GetComponent<BlockColor>().color);
+                print(blockDown.GetComponent<BlockColor>().color == blockColor);
+                matchBlocks.Add(copyGrid[gridY - 1, gridX]);
+            }
+            if (blockRight != null && blockRight.GetComponent<BlockColor>().color == blockColor)
+            {
+                print(blockRight.GetComponent<BlockColor>().color);
+                print(blockRight.GetComponent<BlockColor>().color == blockColor);
+                matchBlocks.Add(copyGrid[gridY, gridX + 1]);
+            }
+            if (blockLeft != null && blockLeft.GetComponent<BlockColor>().color == blockColor)
+            {
+                print(blockLeft.GetComponent<BlockColor>().color);
+                print(blockLeft.GetComponent<BlockColor>().color == blockColor);
+                matchBlocks.Add(copyGrid[gridY, gridX - 1]);
+            }
         }
         return matchBlocks;
+    }
+
+    GameObject BlockExists(int gridX, int gridY, ArrayList matchBlocks)
+    {
+        int YMax = gridController.gridHeight;
+        int XMax = gridController.gridWidth;
+        bool inArray = false;
+
+        if (gridX < XMax && gridX > -1 && gridY < YMax && gridY > -1)
+        {
+            GameObject block = gridController.grid[gridX, gridY];
+            for (int j = 0; j < matchBlocks.Count; j++)
+            {
+                GameObject prevBlock = (GameObject)matchBlocks[j];
+                int prevBlockX = prevBlock.GetComponent<BlockColor>().gridX;
+                int prevBlockY = prevBlock.GetComponent<BlockColor>().gridY;
+                if (gridX != prevBlockX && !inArray)
+                {
+                    if (gridY != prevBlockY)
+                    {
+                        print("here?");
+                        inArray = true;
+                    }
+                    
+                }
+            }
+            if(!inArray)
+            {
+                return block;
+            }
+        }
+        return null;
     }
 }

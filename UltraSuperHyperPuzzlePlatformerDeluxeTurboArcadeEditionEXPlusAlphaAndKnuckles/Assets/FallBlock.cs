@@ -35,7 +35,6 @@ public class FallBlock : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collider2D)
     {
         fall = false;
-        //TODO: move block outside of the block underneath
         Vector2 gridPlace = gridController.ConvertToGrid(transform.position.x, transform.position.y);
         Vector3 newPos = gridController.ConvertToWorld((int)gridPlace.x, (int)gridPlace.y);
         transform.position = newPos;

@@ -14,12 +14,17 @@ public class BlockColor : MonoBehaviour {
     /// A reference to the color the block is
     /// </summary>
     public string color;
+    public int gridX;
+    public int gridY;
 
     /// <summary>
     /// Picks the color of the block and gets the grid index of the block
     /// </summary>
     void Start()
     {
+        Vector2 gridPlace = gridController.ConvertToGrid(transform.position.x, transform.position.y);
+        gridX = (int)gridPlace.x;
+        gridY = (int)gridPlace.y;
         PickColor();
     }
 
