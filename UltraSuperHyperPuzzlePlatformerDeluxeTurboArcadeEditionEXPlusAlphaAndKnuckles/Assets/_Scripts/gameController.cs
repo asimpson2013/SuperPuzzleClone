@@ -16,6 +16,10 @@ public class gameController : MonoBehaviour
     /// </summary>
     public float timer;
     /// <summary>
+    /// The position of the player when instantiated
+    /// </summary>
+    public Vector3 playerPos;
+    /// <summary>
     /// Width of the grid
     /// </summary>
     int gridWidth = 0;
@@ -41,25 +45,25 @@ public class gameController : MonoBehaviour
     /// </summary>
     void Update()
     {
-        //if (timer <= 0)
-        //{
-        //    AddBlocks();
-        //    timer = timerStart;
-        //}
+        if (timer <= 0)
+        {
+            AddBlocks();
+            timer = timerStart;
+        }
 
         //Testing statment will delete later
-        if (Input.GetAxis("Submit") != prevPress && Input.GetAxis("Submit") > 0)
-        {
-            ArrayList matchBlocks = CheckBlocks(0, 0);
-            for (int i = 0; i < matchBlocks.Count; i++)
-            {
-                GameObject block = (GameObject)matchBlocks[i];
-                gridController.removeFromGrid(block.GetComponent<BlockColor>().gridY, block.GetComponent<BlockColor>().gridX);
-                Destroy(block.gameObject);
-            }
-        }
-        prevPress = Input.GetAxis("Submit");
-        //timer -= Time.deltaTime;
+        //if (Input.GetAxis("Submit") != prevPress && Input.GetAxis("Submit") > 0)
+        //{
+        //    ArrayList matchBlocks = CheckBlocks(0, 0);
+        //    for (int i = 0; i < matchBlocks.Count; i++)
+        //    {
+        //        GameObject block = (GameObject)matchBlocks[i];
+        //        gridController.removeFromGrid(block.GetComponent<BlockColor>().gridY, block.GetComponent<BlockColor>().gridX);
+        //        Destroy(block.gameObject);
+        //    }
+        //}
+        //prevPress = Input.GetAxis("Submit");
+        timer -= Time.deltaTime;
     }
 
     /// <summary>

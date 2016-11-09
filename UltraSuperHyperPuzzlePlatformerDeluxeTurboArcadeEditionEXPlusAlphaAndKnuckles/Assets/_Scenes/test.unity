@@ -118,7 +118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 060201d652d2a6544b9b1583bdef4b82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timerStart: 0
+  timerStart: 5
   timer: 0
 --- !u!23 &279377345
 MeshRenderer:
@@ -188,7 +188,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   block: {fileID: 157476, guid: d6595ea8e0ae9e44390070d20f3d840d, type: 2}
   startWidth: 9
-  startHeight: 9
+  startHeight: 1
   pixelsPerUnit: 32
   pstartX: -4
   pstartY: -4
@@ -204,7 +204,7 @@ GameObject:
   - 4: {fileID: 405212896}
   - 61: {fileID: 405212895}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: spikes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

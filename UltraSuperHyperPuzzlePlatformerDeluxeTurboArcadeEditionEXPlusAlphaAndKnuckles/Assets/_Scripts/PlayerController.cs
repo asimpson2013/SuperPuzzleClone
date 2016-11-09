@@ -25,11 +25,12 @@ public class PlayerController : MonoBehaviour {
             body.velocity += new Vector2(0, jumpHeight);
         }
         body.AddForce(Vector2.right * moveH * speed);
-        //Debug.DrawLine(transform.position, new Vector3(body.position.x, body.position.y * groundDetectDistance, 0));
-        //if(Physics2D.Raycast(body.position, Vector2.down, groundDetectDistance, layerMask)) {
-        //    print("Grounded");
-        //    canJump = true;
-        //}
+        Debug.DrawLine(transform.position, new Vector3(body.position.x, body.position.y * groundDetectDistance, 0));
+        if (Physics2D.Raycast(body.position, Vector2.down, groundDetectDistance, layerMask))
+        {
+            print("Grounded");
+            canJump = true;
+        }
 
         
 	}

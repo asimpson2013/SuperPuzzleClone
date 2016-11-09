@@ -50,7 +50,7 @@ public class FallBlock : MonoBehaviour
         int gridX = GetComponent<BlockColor>().gridX;
         int gridY = GetComponent<BlockColor>().gridY;
         GameObject[,] copyGrid = gridController.grid;
-        if(gridY - 1 > -1 && copyGrid[gridY -1, gridX] == null)
+        if (gridY - 1 > -1 && copyGrid[gridY - 1, gridX] == null)
         {
             fall = true;
             gridController.removeFromGrid(gridY, gridX);

@@ -46,11 +46,13 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\BlockColor.cs" />
-     <Compile Include="Assets\FallBlock.cs" />
+     <Compile Include="Assets\_Scripts\BlockColor.cs" />
+     <Compile Include="Assets\_Scripts\CharSelectControl.cs" />
+     <Compile Include="Assets\_Scripts\CharacterSelection.cs" />
+     <Compile Include="Assets\_Scripts\FallBlock.cs" />
      <Compile Include="Assets\_Scripts\PlayerController.cs" />
-     <Compile Include="Assets\gameController.cs" />
-     <Compile Include="Assets\gridController.cs" />
+     <Compile Include="Assets\_Scripts\gameController.cs" />
+     <Compile Include="Assets\_Scripts\gridController.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
