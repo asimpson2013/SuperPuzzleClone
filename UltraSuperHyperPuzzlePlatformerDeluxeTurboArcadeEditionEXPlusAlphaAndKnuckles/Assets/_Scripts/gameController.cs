@@ -10,11 +10,11 @@ public class gameController : MonoBehaviour
     /// <summary>
     /// How long until blocks start to fall
     /// </summary>
-    public float timerStart = 5;
+    //public float timerStart = 5;
     /// <summary>
     /// Actual countdown of how long until the next block will fall
     /// </summary>
-    public float timer;
+    //public float timer;
     /// <summary>
     /// The position of the player when instantiated
     /// </summary>
@@ -37,7 +37,7 @@ public class gameController : MonoBehaviour
     {
         this.gridWidth = gridController.gridWidth;
         this.gridHeight = gridController.gridHeight;
-        timer = timerStart;
+        //timer = timerStart;
     }
 
     /// <summary>
@@ -45,25 +45,25 @@ public class gameController : MonoBehaviour
     /// </summary>
     void Update()
     {
-        if (timer <= 0)
-        {
-            AddBlocks();
-            timer = timerStart;
-        }
+        //if (timer <= 0)
+        //{
+        //    AddBlocks();
+        //    timer = timerStart;
+        //}
 
         //Testing statment will delete later
-        //if (Input.GetAxis("Submit") != prevPress && Input.GetAxis("Submit") > 0)
-        //{
-        //    ArrayList matchBlocks = CheckBlocks(0, 0);
-        //    for (int i = 0; i < matchBlocks.Count; i++)
-        //    {
-        //        GameObject block = (GameObject)matchBlocks[i];
-        //        gridController.removeFromGrid(block.GetComponent<BlockColor>().gridY, block.GetComponent<BlockColor>().gridX);
-        //        Destroy(block.gameObject);
-        //    }
-        //}
-        //prevPress = Input.GetAxis("Submit");
-        timer -= Time.deltaTime;
+        if (Input.GetAxis("Submit") != prevPress && Input.GetAxis("Submit") > 0)
+        {
+            ArrayList matchBlocks = CheckBlocks(0, 0);
+            for (int i = 0; i < matchBlocks.Count; i++)
+            {
+                GameObject block = (GameObject)matchBlocks[i];
+                gridController.removeFromGrid(block.GetComponent<BlockColor>().gridY, block.GetComponent<BlockColor>().gridX);
+                Destroy(block.gameObject);
+            }
+        }
+        prevPress = Input.GetAxis("Submit");
+        //timer -= Time.deltaTime;
     }
 
     /// <summary>

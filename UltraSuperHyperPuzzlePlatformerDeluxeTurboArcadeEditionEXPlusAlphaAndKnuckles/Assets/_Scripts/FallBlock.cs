@@ -15,6 +15,10 @@ public class FallBlock : MonoBehaviour
     /// If the block has landed on another block yet or not
     /// </summary>
     public bool fall = true;
+    /// <summary>
+    /// The layer that the block is on
+    /// </summary>
+    public LayerMask layerMask;
 
     /// <summary>
     /// moves the block down each frame.
@@ -49,11 +53,21 @@ public class FallBlock : MonoBehaviour
     {
         int gridX = GetComponent<BlockColor>().gridX;
         int gridY = GetComponent<BlockColor>().gridY;
-        GameObject[,] copyGrid = gridController.grid;
-        if (gridY - 1 > -1 && copyGrid[gridY - 1, gridX] == null)
+        //GameObject[,] copyGrid = gridController.grid;
+        //if(gridY -1 > -1)
+        //{
+        //    print("Stop it");
+        //    if (copyGrid[gridY - 1, gridX] == null)
+        //    {
+        //        print("There is something below you");
+        //        fall = true;
+        //        gridController.removeFromGrid(gridY, gridX);
+        //    }
+        //}
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 1, layerMask);
+        if (hit.collider == null)
         {
-            fall = true;
-            gridController.removeFromGrid(gridY, gridX);
+            print("there's a thing below me");
         }
     }
 }

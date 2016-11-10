@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public static class CharSelectControl : MonoBehaviour {
+public class CharSelectControl : MonoBehaviour {
 
-	static enum ChosenCharacter
-    {
-        Character1,
-        Character2
-    }
+	//static enum ChosenCharacter
+ //   {
+ //       Character1,
+ //       Character2
+ //   }
 }
