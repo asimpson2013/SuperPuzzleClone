@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\_Scripts\BlockColor.cs" />
+     <Compile Include="Assets\_Scripts\BoardCreation.cs" />
      <Compile Include="Assets\_Scripts\CharSelectControl.cs" />
      <Compile Include="Assets\_Scripts\FallBlock.cs" />
      <Compile Include="Assets\_Scripts\PlayerController.cs" />
