@@ -156,8 +156,8 @@ public class gridController : MonoBehaviour
     /// <returns>The grid point equivalent to the world point</returns>
     public static Vector2 ConvertToGrid(float worldX, float worldY)
     {
-        int X = (int)Mathf.Ceil((worldX / (blockWidth / perUnit)) - startX);
-        int Y = (int)Mathf.Ceil((worldY / (blockHeight / perUnit)) - startY);
+        int X = (int)Mathf.Round((worldX / (blockWidth / perUnit)) - startX);
+        int Y = (int)Mathf.Round((worldY / (blockHeight / perUnit)) - startY);
         Vector2 gridCoord = new Vector2(X, Y);
         return gridCoord;
     }

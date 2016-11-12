@@ -121,7 +121,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 060201d652d2a6544b9b1583bdef4b82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timerStart: 5
+  timer: 0
   playerPos: {x: 0, y: 0, z: 0}
+  players:
+  - {fileID: 1000012010289502, guid: 088fa6b5f0f266846b97392a8a1ffe41, type: 2}
+  - {fileID: 1000013339306060, guid: 2151866d9fef33647aca3a24c58459fd, type: 2}
+  - {fileID: 1000010872838830, guid: d40161d7025ff0546a85f632be9f0903, type: 2}
 --- !u!23 &279377345
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -196,7 +202,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   block: {fileID: 157476, guid: d6595ea8e0ae9e44390070d20f3d840d, type: 2}
   startWidth: 9
-  startHeight: 9
+  startHeight: 1
   pixelsPerUnit: 32
   pstartX: -4
   pstartY: -4

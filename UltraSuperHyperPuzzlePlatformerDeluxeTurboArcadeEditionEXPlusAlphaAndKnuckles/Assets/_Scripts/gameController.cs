@@ -10,11 +10,11 @@ public class gameController : MonoBehaviour
     /// <summary>
     /// How long until blocks start to fall
     /// </summary>
-    //public float timerStart = 5;
+    public float timerStart = 5;
     /// <summary>
     /// Actual countdown of how long until the next block will fall
     /// </summary>
-    //public float timer;
+    public float timer;
     /// <summary>
     /// The position of the player when instantiated
     /// </summary>
@@ -27,8 +27,20 @@ public class gameController : MonoBehaviour
     /// Height of the grid
     /// </summary>
     int gridHeight = 0;
+    /// <summary>
+    /// The chosen character
+    /// </summary>
+    public static CharSelectControl.ChosenCharacter character = CharSelectControl.ChosenCharacter.Character1;
+    /// <summary>
+    /// The potential players to pick from
+    /// </summary>
+    public GameObject[] players;
+    /// <summary>
+    /// The current player on the screen
+    /// </summary>
+    GameObject player;
     //Testing variable will delete later
-    float prevPress = 0;
+    //float prevPress = 0;
 
     /// <summary>
     /// Sets grid width, grid height and starts timer
@@ -37,7 +49,22 @@ public class gameController : MonoBehaviour
     {
         this.gridWidth = gridController.gridWidth;
         this.gridHeight = gridController.gridHeight;
-        //timer = timerStart;
+        timer = timerStart;
+
+        switch(character)
+        {
+            case CharSelectControl.ChosenCharacter.Character1:
+                player = players[0];
+                break;
+            case CharSelectControl.ChosenCharacter.Character2:
+                player = players[1];
+                break;
+            case CharSelectControl.ChosenCharacter.Character3:
+                player = players[2];
+                break;
+        }
+
+        Inst(player);
     }
 
     /// <summary>
@@ -45,25 +72,34 @@ public class gameController : MonoBehaviour
     /// </summary>
     void Update()
     {
-        //if (timer <= 0)
-        //{
-        //    AddBlocks();
-        //    timer = timerStart;
-        //}
+        if (timer <= 0)
+        {
+            AddBlocks();
+            timer = timerStart;
+        }
 
         //Testing statment will delete later
-        if (Input.GetAxis("Submit") != prevPress && Input.GetAxis("Submit") > 0)
-        {
-            ArrayList matchBlocks = CheckBlocks(0, 0);
-            for (int i = 0; i < matchBlocks.Count; i++)
-            {
-                GameObject block = (GameObject)matchBlocks[i];
-                gridController.removeFromGrid(block.GetComponent<BlockColor>().gridY, block.GetComponent<BlockColor>().gridX);
-                Destroy(block.gameObject);
-            }
-        }
-        prevPress = Input.GetAxis("Submit");
-        //timer -= Time.deltaTime;
+        //if (Input.GetAxis("Submit") != prevPress && Input.GetAxis("Submit") > 0)
+        //{
+        //    ArrayList matchBlocks = CheckBlocks(0, 0);
+        //    for (int i = 0; i < matchBlocks.Count; i++)
+        //    {
+        //        GameObject block = (GameObject)matchBlocks[i];
+        //        gridController.removeFromGrid(block.GetComponent<BlockColor>().gridY, block.GetComponent<BlockColor>().gridX);
+        //        Destroy(block.gameObject);
+        //    }
+        //}
+        //prevPress = Input.GetAxis("Submit");
+        timer -= Time.deltaTime;
+    }
+
+    /// <summary>
+    /// Adds a player onto the screen
+    /// </summary>
+    /// <param name="player">The player game object being instantiated</param>
+    void Inst(GameObject player)
+    {
+        GameObject newPlayer = (GameObject)Instantiate(player, playerPos, Quaternion.identity);
     }
 
     /// <summary>
@@ -78,7 +114,7 @@ public class gameController : MonoBehaviour
         GetComponent<gridController>().InstBlock(placement);
     }
 
-    //This method isn't complete
+    //This method isn't complete (If time convert to ray casting)
     /// <summary>
     /// Checks surrounding blocks for matching colors
     /// </summary>

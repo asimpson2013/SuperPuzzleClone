@@ -37,7 +37,7 @@ public class FallBlock : MonoBehaviour
     /// Stops the block from falling after it has hit the block below or the bottom of the scene
     /// </summary>
     /// <param name="collider2D">The block it has collided with</param>
-    void OnTriggerEnter2D(Collider2D collider2D)
+    void BlockCollision(Collider2D collider2D)
     {
         fall = false;
         Vector2 gridPlace = gridController.ConvertToGrid(transform.position.x, transform.position.y);
@@ -53,21 +53,18 @@ public class FallBlock : MonoBehaviour
     {
         int gridX = GetComponent<BlockColor>().gridX;
         int gridY = GetComponent<BlockColor>().gridY;
-        //GameObject[,] copyGrid = gridController.grid;
-        //if(gridY -1 > -1)
-        //{
-        //    print("Stop it");
-        //    if (copyGrid[gridY - 1, gridX] == null)
-        //    {
-        //        print("There is something below you");
-        //        fall = true;
-        //        gridController.removeFromGrid(gridY, gridX);
-        //    }
-        //}
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, 1, layerMask);
+        Vector2 bottom = new Vector2(transform.position.x, transform.position.y - .5f);
+        RaycastHit2D hit = Physics2D.Raycast(bottom, Vector2.down, .03f, layerMask);
+        Vector3 dis = new Vector3(0, -.005f, 0);
+        Debug.DrawRay(bottom, dis);
+
         if (hit.collider == null)
         {
-            print("there's a thing below me");
+            fall = true;
+        }
+        else
+        {
+            BlockCollision(hit.collider);
         }
     }
 }
