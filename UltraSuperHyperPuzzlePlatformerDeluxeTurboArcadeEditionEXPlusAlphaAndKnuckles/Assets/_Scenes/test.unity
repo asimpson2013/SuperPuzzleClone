@@ -103,6 +103,7 @@ GameObject:
   - 23: {fileID: 279377345}
   - 114: {fileID: 279377344}
   - 114: {fileID: 279377349}
+  - 114: {fileID: 279377350}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -200,14 +201,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ad362e2d7d97fc4cb4c0ebf60a317b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  block: {fileID: 157476, guid: d6595ea8e0ae9e44390070d20f3d840d, type: 2}
+  block: {fileID: 187328, guid: e21ef135ff0a1874f8f608d81a6ac078, type: 2}
   startWidth: 9
   startHeight: 1
   pixelsPerUnit: 32
   pstartX: -4
   pstartY: -4
   pgridWidth: 9
-  pgridHeight: 9
+  pgridHeight: 14
+--- !u!114 &279377350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 279377343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1619c34b4b97074c885f51957a9abb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  block: {fileID: 187328, guid: e21ef135ff0a1874f8f608d81a6ac078, type: 2}
+  star: {fileID: 1000011939390426, guid: 16f59b3aad0ea1f4b8767639442536d3, type: 2}
+  gem: {fileID: 1000013368554712, guid: f59ce21815c6ea14d987483d6f1ecccd, type: 2}
+  crate: {fileID: 1000011465980058, guid: 51f174cd59c0f1a409a58020a637b2ba, type: 2}
+  treasure: {fileID: 1000012994960808, guid: d206b3a001a7a314683a37ad2d1a2822, type: 2}
+  cannon: {fileID: 1000012320804388, guid: 51ca3f0317fded4448123d1d3f99ebfd, type: 2}
+  dynamite: {fileID: 1000014074201350, guid: f3396a7f619cbe848b8c25fd1e02cde7, type: 2}
+  spikeBlock: {fileID: 1000013996719250, guid: ff559580396c4d8469c5ff6a73940067, type: 2}
 --- !u!1 &405212894
 GameObject:
   m_ObjectHideFlags: 0

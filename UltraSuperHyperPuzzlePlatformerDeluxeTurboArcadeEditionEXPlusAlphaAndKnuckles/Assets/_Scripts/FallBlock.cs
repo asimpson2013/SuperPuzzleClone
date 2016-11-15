@@ -19,6 +19,7 @@ public class FallBlock : MonoBehaviour
     /// The layer that the block is on
     /// </summary>
     public LayerMask layerMask;
+    public Collider2D collider;
 
     /// <summary>
     /// moves the block down each frame.
@@ -51,13 +52,13 @@ public class FallBlock : MonoBehaviour
     /// </summary>
     void DetectBelow()
     {
-        int gridX = GetComponent<BlockColor>().gridX;
-        int gridY = GetComponent<BlockColor>().gridY;
-        Vector2 bottom = new Vector2(transform.position.x, transform.position.y - .5f);
+        int gridX = GetComponent<Block>().gridX;
+        int gridY = GetComponent<Block>().gridY;
+        Vector2 bottom = new Vector2(transform.position.x, transform.position.y - .6f);
         RaycastHit2D hit = Physics2D.Raycast(bottom, Vector2.down, .03f, layerMask);
         Vector3 dis = new Vector3(0, -.005f, 0);
         Debug.DrawRay(bottom, dis);
-
+        collider = hit.collider;
         if (hit.collider == null)
         {
             fall = true;

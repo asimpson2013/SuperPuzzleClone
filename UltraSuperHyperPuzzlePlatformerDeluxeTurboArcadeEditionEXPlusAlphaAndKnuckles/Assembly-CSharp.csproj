@@ -45,6 +45,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\_Scripts\Block.cs" />
      <Compile Include="Assets\_Scripts\BlockColor.cs" />
      <Compile Include="Assets\_Scripts\BoardCreation.cs" />
      <Compile Include="Assets\_Scripts\CharSelectControl.cs" />

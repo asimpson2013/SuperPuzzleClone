@@ -40,7 +40,7 @@ public class gameController : MonoBehaviour
     /// </summary>
     GameObject player;
     //Testing variable will delete later
-    //float prevPress = 0;
+    float prevPress = 0;
 
     /// <summary>
     /// Sets grid width, grid height and starts timer
@@ -64,7 +64,7 @@ public class gameController : MonoBehaviour
                 break;
         }
 
-        Inst(player);
+        //Inst(player);
     }
 
     /// <summary>
@@ -72,24 +72,35 @@ public class gameController : MonoBehaviour
     /// </summary>
     void Update()
     {
-        if (timer <= 0)
+        bool isSpot = false;
+        for (int i = 0; i < gridWidth; i++)
         {
-            AddBlocks();
+            GameObject testBlock = gridController.grid[gridHeight - 1, i];
+            if (testBlock == null)
+            {
+                isSpot = true;
+            }
+        }
+
+        if (timer <= 0 && isSpot)
+        {
+            GetComponent<BoardCreation>().ChooseBlocks();
             timer = timerStart;
         }
 
         //Testing statment will delete later
-        //if (Input.GetAxis("Submit") != prevPress && Input.GetAxis("Submit") > 0)
-        //{
-        //    ArrayList matchBlocks = CheckBlocks(0, 0);
-        //    for (int i = 0; i < matchBlocks.Count; i++)
-        //    {
-        //        GameObject block = (GameObject)matchBlocks[i];
-        //        gridController.removeFromGrid(block.GetComponent<BlockColor>().gridY, block.GetComponent<BlockColor>().gridX);
-        //        Destroy(block.gameObject);
-        //    }
-        //}
-        //prevPress = Input.GetAxis("Submit");
+        if (Input.GetAxis("Submit") != prevPress && Input.GetAxis("Submit") > 0)
+        {
+            ArrayList matchBlocks = CheckBlocks(0, 0);
+            for (int i = 0; i < matchBlocks.Count; i++)
+            {
+                GameObject block = (GameObject)matchBlocks[i];
+                gridController.removeFromGrid(block.GetComponent<Block>().gridY, block.GetComponent<Block>().gridX);
+                Destroy(block.gameObject);
+            }
+        }
+        prevPress = Input.GetAxis("Submit");
+
         timer -= Time.deltaTime;
     }
 
@@ -97,24 +108,13 @@ public class gameController : MonoBehaviour
     /// Adds a player onto the screen
     /// </summary>
     /// <param name="player">The player game object being instantiated</param>
-    void Inst(GameObject player)
-    {
-        GameObject newPlayer = (GameObject)Instantiate(player, playerPos, Quaternion.identity);
-    }
-
-    /// <summary>
-    /// Adds a block to a random x location off the screen
-    /// </summary>
-    void AddBlocks()
-    {
-        int rand = Random.Range(0, gridWidth);
-        int Y = gridHeight + 5; //need to change this to a editable variable
-
-        Vector3 placement = gridController.ConvertToWorld(rand, Y);
-        GetComponent<gridController>().InstBlock(placement);
-    }
+    //void Inst(GameObject player)
+    //{
+    //    GameObject newPlayer = (GameObject)Instantiate(player, playerPos, Quaternion.identity);
+    //}
 
     //This method isn't complete (If time convert to ray casting)
+
     /// <summary>
     /// Checks surrounding blocks for matching colors
     /// </summary>
@@ -134,26 +134,26 @@ public class gameController : MonoBehaviour
         for (int i = 0; i <= matchBlocks.Count - 1; i++)
         {
             block = (GameObject)matchBlocks[i];
-            int gridX = block.GetComponent<BlockColor>().gridX;
-            int gridY = block.GetComponent<BlockColor>().gridY;
+            int gridX = block.GetComponent<Block>().gridX;
+            int gridY = block.GetComponent<Block>().gridY;
             GameObject blockUp = BlockExists(gridX, gridY + 1, matchBlocks);
             GameObject blockDown = BlockExists( gridX, gridY - 1 ,matchBlocks);
             GameObject blockRight = BlockExists( gridX + 1, gridY, matchBlocks);
             GameObject blockLeft = BlockExists( gridX - 1, gridY, matchBlocks);
 
-            if (blockUp != null && blockUp.GetComponent<BlockColor>().color == blockColor)
+            if (blockUp != null && blockUp.GetComponent<BlockColor>().color == blockColor || blockUp != null && blockUp.GetComponent<Block>().type == "hazard")
             {
                 matchBlocks.Add(copyGrid[gridY + 1, gridX]);
             }
-            if (blockDown != null && blockDown.GetComponent<BlockColor>().color == blockColor)
+            if (blockDown != null && blockDown.GetComponent<BlockColor>().color == blockColor || blockUp != null && blockUp.GetComponent<Block>().type == "hazard")
             {
                 matchBlocks.Add(copyGrid[gridY - 1, gridX]);
             }
-            if (blockRight != null && blockRight.GetComponent<BlockColor>().color == blockColor)
+            if (blockRight != null && blockRight.GetComponent<BlockColor>().color == blockColor || blockUp != null && blockUp.GetComponent<Block>().type == "hazard")
             {
                 matchBlocks.Add(copyGrid[gridY, gridX + 1]);
             }
-            if (blockLeft != null && blockLeft.GetComponent<BlockColor>().color == blockColor)
+            if (blockLeft != null && blockLeft.GetComponent<BlockColor>().color == blockColor || blockUp != null && blockUp.GetComponent<Block>().type == "hazard")
             {
                 matchBlocks.Add(copyGrid[gridY, gridX - 1]);
             }
@@ -180,8 +180,8 @@ public class gameController : MonoBehaviour
             for (int j = 0; j <= matchBlocks.Count - 1; j++)
             {
                 GameObject prevBlock = (GameObject)matchBlocks[j];
-                int prevBlockX = prevBlock.GetComponent<BlockColor>().gridX;
-                int prevBlockY = prevBlock.GetComponent<BlockColor>().gridY;
+                int prevBlockX = prevBlock.GetComponent<Block>().gridX;
+                int prevBlockY = prevBlock.GetComponent<Block>().gridY;
                 if (gridX == prevBlockX && !inArray)
                 {
                     if (gridY == prevBlockY)

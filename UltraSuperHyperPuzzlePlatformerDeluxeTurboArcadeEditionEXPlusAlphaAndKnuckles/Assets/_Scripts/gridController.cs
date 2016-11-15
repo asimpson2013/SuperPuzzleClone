@@ -23,11 +23,11 @@ public class gridController : MonoBehaviour
     /// <summary>
     /// The width of the grid by the number of blocks
     /// </summary>
-    public static int gridWidth = 5;
+    public static int gridWidth = 9;
     /// <summary>
     /// The height of the grid by the number of blocks
     /// </summary>
-    public static int gridHeight = 5;
+    public static int gridHeight = 13;
     /// <summary>
     /// The width of the block in meters
     /// </summary>
@@ -47,13 +47,33 @@ public class gridController : MonoBehaviour
     #endregion
 
     #region public vars
-    //Unsure if we will keep these so they are staying uncommented
+    /// <summary>
+    /// The starting grid width
+    /// </summary>
     public int startWidth = 9;
+    /// <summary>
+    /// The starting grid height
+    /// </summary>
     public int startHeight = 1;
+    /// <summary>
+    /// how many pixels are in a unit
+    /// </summary>
     public float pixelsPerUnit = 32;
+    /// <summary>
+    /// The starting X location of the grid
+    /// </summary>
     public float pstartX = 0;
+    /// <summary>
+    /// The starting Y location of the grid
+    /// </summary>
     public float pstartY = 0;
+    /// <summary>
+    /// The grid width
+    /// </summary>
     public int pgridWidth = 0;
+    /// <summary>
+    /// The grid height
+    /// </summary>
     public int pgridHeight = 0;
     #endregion
 
@@ -62,7 +82,6 @@ public class gridController : MonoBehaviour
     /// </summary>
     void Start()
     {
-        //Maybe get the height and width of the screen and calculate a grid width and height that way?
         gridWidth = pgridWidth;
         gridHeight = pgridHeight;
         perUnit = pixelsPerUnit;
@@ -85,19 +104,11 @@ public class gridController : MonoBehaviour
             {
                 Vector3 placement = ConvertToWorld(x, y);
                 GameObject newBlock = (GameObject)Instantiate(block, placement, Quaternion.identity);
+                newBlock.GetComponent<Block>().type = "block";
                 newBlock.GetComponent<FallBlock>().fall = false;
                 grid[y, x] = newBlock;
             }
         }
-    }
-
-    /// <summary>
-    /// Adds a block to the scene
-    /// </summary>
-    /// <param name="placement">The place the block spawns</param>
-    public void InstBlock(Vector3 placement)
-    {
-        GameObject newBlock = (GameObject)Instantiate(block, placement, Quaternion.identity);
     }
 
     /// <summary>
@@ -118,7 +129,10 @@ public class gridController : MonoBehaviour
     /// <param name="X">The x position of the object in the grid</param>
     public static void removeFromGrid(int Y, int X)
     {
-        grid[Y, X] = null;
+        for (int i = 0; i < gridHeight; i++ )
+        {
+            grid[i, X] = null;
+        }
         GameObject[,] newGrid = new GameObject[gridHeight, gridWidth];
         for (int y = 0; y < gridHeight; y++)
         {
