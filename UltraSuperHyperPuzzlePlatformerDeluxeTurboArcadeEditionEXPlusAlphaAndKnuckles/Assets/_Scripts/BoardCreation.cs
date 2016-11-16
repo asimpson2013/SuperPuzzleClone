@@ -30,6 +30,14 @@ public class BoardCreation : MonoBehaviour
     /// Type of block
     /// </summary>
     string type;
+    /// <summary>
+    /// For when the computer chooses the pattern option
+    /// </summary>
+    bool isPattern = false;
+    /// <summary>
+    /// How many times the Pattern has dropped
+    /// </summary>
+    int PatternDrop;
     #region prefabs
     /// <summary>
     /// block prefab
@@ -80,7 +88,11 @@ public class BoardCreation : MonoBehaviour
     public void ChooseBlocks()
     {
         die1 = Random.Range(0, 100);
-        if (die1 <= 70)
+        if (isPattern)
+        {
+            AddPattern();
+        }
+        else if (die1 <= 70)
         {
             AddObj(block);
             type = "block";
@@ -102,11 +114,8 @@ public class BoardCreation : MonoBehaviour
         int totalDice = die1 + die2;
         if (totalDice <= 3)
         {
-            type = "block";
-            for (int i = 0; i < 4; i++)
-            {
-                Invoke("AddPattern", 5);
-            } 
+            isPattern = true;
+            AddPattern();
         }
         else if (totalDice > 3 && totalDice < 9)
         {
@@ -208,7 +217,7 @@ public class BoardCreation : MonoBehaviour
     public void AddPattern()
     {
         int rand = Random.Range(0, gridWidth);
-        int Y = gridHeight;
+        int Y = gridHeight - 1;
 
         for (int i = 0; i < gridWidth; i++)
         {
@@ -218,6 +227,13 @@ public class BoardCreation : MonoBehaviour
                 InstSprite(block, placement);
             }
         }
+
+        if (PatternDrop == 4)
+        {
+            isPattern = false;
+            PatternDrop = 0;
+        }
+        PatternDrop++;
     }
 
     /// <summary>

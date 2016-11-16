@@ -52,8 +52,6 @@ public class FallBlock : MonoBehaviour
     /// </summary>
     void DetectBelow()
     {
-        int gridX = GetComponent<Block>().gridX;
-        int gridY = GetComponent<Block>().gridY;
         Vector2 bottom = new Vector2(transform.position.x, transform.position.y - .6f);
         RaycastHit2D hit = Physics2D.Raycast(bottom, Vector2.down, .03f, layerMask);
         Vector3 dis = new Vector3(0, -.005f, 0);

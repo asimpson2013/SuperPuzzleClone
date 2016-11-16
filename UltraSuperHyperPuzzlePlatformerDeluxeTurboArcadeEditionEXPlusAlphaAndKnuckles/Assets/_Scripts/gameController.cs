@@ -39,6 +39,10 @@ public class gameController : MonoBehaviour
     /// The current player on the screen
     /// </summary>
     GameObject player;
+    /// <summary>
+    /// The triangle peices used to level up
+    /// </summary>
+    public GameObject triangle;
     //Testing variable will delete later
     float prevPress = 0;
 
@@ -91,17 +95,40 @@ public class gameController : MonoBehaviour
         //Testing statment will delete later
         if (Input.GetAxis("Submit") != prevPress && Input.GetAxis("Submit") > 0)
         {
-            ArrayList matchBlocks = CheckBlocks(0, 0);
-            for (int i = 0; i < matchBlocks.Count; i++)
-            {
-                GameObject block = (GameObject)matchBlocks[i];
-                gridController.removeFromGrid(block.GetComponent<Block>().gridY, block.GetComponent<Block>().gridX);
-                Destroy(block.gameObject);
-            }
+            RemoveBlocks();
         }
         prevPress = Input.GetAxis("Submit");
 
         timer -= Time.deltaTime;
+    }
+
+    /// <summary>
+    /// Removes Blocks from the screen
+    /// </summary>
+    void RemoveBlocks()
+    {
+        ArrayList matchBlocks = CheckBlocks(0, 0);
+        for (int i = 0; i < matchBlocks.Count; i++)
+        {
+            int rand = Random.Range(1, 4);
+            GameObject block = (GameObject)matchBlocks[i];
+            gridController.removeFromGrid(block.GetComponent<Block>().gridY, block.GetComponent<Block>().gridX);
+            Destroy(block.gameObject);
+            AddTriangles(rand, block.transform.position);
+        }
+    }
+
+    /// <summary>
+    /// Adds Triangles to the Screen
+    /// </summary>
+    /// <param name="numb">The number of Triangles being added</param>
+    /// <param name="placement">The place the triangle should spawn</param>
+    void AddTriangles(int numb, Vector3 placement)
+    {
+        for(int i = 0; i < numb; i++)
+        {
+            Instantiate(triangle, placement, Quaternion.identity);
+        }
     }
 
     /// <summary>
