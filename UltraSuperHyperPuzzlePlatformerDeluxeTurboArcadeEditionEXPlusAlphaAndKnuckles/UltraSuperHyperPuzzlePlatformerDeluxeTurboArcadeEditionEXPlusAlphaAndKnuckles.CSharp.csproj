@@ -63,7 +63,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\_Scripts\BlockColor.cs" />
+    <Compile Include="Assets\_Scripts\FallBlock.cs" />
     <Compile Include="Assets\_Scripts\PlayerController.cs" />
+    <Compile Include="Assets\_Scripts\gameController.cs" />
+    <Compile Include="Assets\_Scripts\gridController.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>
