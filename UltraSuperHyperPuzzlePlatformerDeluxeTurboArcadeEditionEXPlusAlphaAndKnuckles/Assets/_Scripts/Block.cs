@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Defines a block within the grid
+/// </summary>
 public class Block : MonoBehaviour 
 {
     /// <summary>

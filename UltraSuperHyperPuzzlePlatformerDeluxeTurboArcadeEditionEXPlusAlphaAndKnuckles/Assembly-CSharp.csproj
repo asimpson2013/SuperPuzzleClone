@@ -48,8 +48,11 @@
      <Compile Include="Assets\_Scripts\Block.cs" />
      <Compile Include="Assets\_Scripts\BlockColor.cs" />
      <Compile Include="Assets\_Scripts\BoardCreation.cs" />
+     <Compile Include="Assets\_Scripts\ButtonBobbing.cs" />
      <Compile Include="Assets\_Scripts\CharSelectControl.cs" />
      <Compile Include="Assets\_Scripts\FallBlock.cs" />
+     <Compile Include="Assets\_Scripts\MainMenuController.cs" />
+     <Compile Include="Assets\_Scripts\PlayerCollision.cs" />
      <Compile Include="Assets\_Scripts\PlayerController.cs" />
      <Compile Include="Assets\_Scripts\Triangle.cs" />
      <Compile Include="Assets\_Scripts\gameController.cs" />

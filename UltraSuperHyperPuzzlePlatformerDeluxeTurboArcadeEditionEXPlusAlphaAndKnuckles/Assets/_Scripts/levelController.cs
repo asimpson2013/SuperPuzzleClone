@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Controlls the leveling of the character
+/// </summary>
 public class levelController : MonoBehaviour {
 
     /// <summary>
@@ -20,25 +23,35 @@ public class levelController : MonoBehaviour {
     /// </summary>
     public static int maxLevel = 4;
 	
-	// Update is called once per frame
+	/// <summary>
+	/// Adds a level when the 
+	/// </summary>
 	void Update () 
     {
 	    if (levelCount != maxLevel)
         {
-
+            AddLevel();
         }
 	}
 
+    /// <summary>
+    /// Adds a level to the character
+    /// </summary>
     void AddLevel()
     {
         if (currExp >= expAmount)
         {
             levelCount++;
             expAmount = Mathf.Pow(expAmount, 2f);
+            currExp = currExp - (int)expAmount;
         }
     }
 
-    void AddExp(int Amt)
+    /// <summary>
+    /// Adds experience to the current experience
+    /// </summary>
+    /// <param name="Amt">The amount of exp being added</param>
+    public static void AddExp(int Amt)
     {
         currExp += Amt;
     }

@@ -43,8 +43,6 @@ public class gameController : MonoBehaviour
     /// The triangle peices used to level up
     /// </summary>
     public GameObject triangle;
-    //Testing variable will delete later
-    float prevPress = 0;
 
     /// <summary>
     /// Sets grid width, grid height and starts timer
@@ -91,13 +89,6 @@ public class gameController : MonoBehaviour
             GetComponent<BoardCreation>().ChooseBlocks();
             timer = timerStart;
         }
-
-        //Testing statment will delete later
-        if (Input.GetAxis("Submit") != prevPress && Input.GetAxis("Submit") > 0)
-        {
-            RemoveBlocks();
-        }
-        prevPress = Input.GetAxis("Submit");
 
         timer -= Time.deltaTime;
     }

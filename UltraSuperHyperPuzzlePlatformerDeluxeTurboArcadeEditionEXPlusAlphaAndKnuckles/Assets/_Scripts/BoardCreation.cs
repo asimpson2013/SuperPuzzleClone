@@ -88,14 +88,19 @@ public class BoardCreation : MonoBehaviour
     public void ChooseBlocks()
     {
         die1 = Random.Range(0, 100);
-        if (isPattern)
+        if (levelController.levelCount == 1)
+        {
+            type = "block";
+            AddObj(block);
+        }
+        else if (isPattern)
         {
             AddPattern();
         }
         else if (die1 <= 70)
         {
-            AddObj(block);
             type = "block";
+            AddObj(block);
         }
         else
         {

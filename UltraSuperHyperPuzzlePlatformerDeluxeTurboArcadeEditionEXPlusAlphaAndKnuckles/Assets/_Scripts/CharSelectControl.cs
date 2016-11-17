@@ -5,8 +5,9 @@ using UnityEngine.SceneManagement;
 /// <summary>
 /// Controls which character is selected 
 /// </summary>
-public class CharSelectControl:MonoBehaviour 
+public class CharSelectControl:MonoBehaviour
 {
+
     /// <summary>
     /// The Characters that can be chosen
     /// </summary>
@@ -23,7 +24,7 @@ public class CharSelectControl:MonoBehaviour
     public void SelectCharacter1()
     {
         gameController.character = ChosenCharacter.Character1;
-        SceneManager.LoadScene(1);
+        LoadGame();
     }
 
     /// <summary>
@@ -32,7 +33,7 @@ public class CharSelectControl:MonoBehaviour
     public void SelectCharacter2()
     {
         gameController.character = ChosenCharacter.Character2;
-        SceneManager.LoadScene(1);
+        LoadGame();
     }
 
     /// <summary>
@@ -41,6 +42,14 @@ public class CharSelectControl:MonoBehaviour
     public void SelectCharacter3()
     {
         gameController.character = ChosenCharacter.Character3;
-        SceneManager.LoadScene(1);
+        LoadGame();
+    }
+
+    /// <summary>
+    /// Loads the game
+    /// </summary>
+    void LoadGame()
+    {
+        SceneManager.LoadScene(2);
     }
 }
