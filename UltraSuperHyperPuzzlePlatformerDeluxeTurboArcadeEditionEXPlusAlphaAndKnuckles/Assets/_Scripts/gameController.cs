@@ -4,7 +4,8 @@ using System.Collections;
 /// <summary>
 /// Controlls when and where blocks fall
 /// </summary>
-public class gameController : MonoBehaviour {
+public class gameController : MonoBehaviour
+{
 
     /// <summary>
     /// How long until blocks start to fall
@@ -15,6 +16,10 @@ public class gameController : MonoBehaviour {
     /// </summary>
     public float timer;
     /// <summary>
+    /// The position of the player when instantiated
+    /// </summary>
+    public Vector3 playerPos;
+    /// <summary>
     /// Width of the grid
     /// </summary>
     int gridWidth = 0;
@@ -22,6 +27,20 @@ public class gameController : MonoBehaviour {
     /// Height of the grid
     /// </summary>
     int gridHeight = 0;
+    /// <summary>
+    /// The chosen character
+    /// </summary>
+    public static CharSelectControl.ChosenCharacter character = CharSelectControl.ChosenCharacter.Character1;
+    /// <summary>
+    /// The potential players to pick from
+    /// </summary>
+    public GameObject[] players;
+    /// <summary>
+    /// The current player on the screen
+    /// </summary>
+    GameObject player;
+    //Testing variable will delete later
+    float prevPress = 0;
 
     /// <summary>
     /// Sets grid width, grid height and starts timer
@@ -31,34 +50,61 @@ public class gameController : MonoBehaviour {
         this.gridWidth = gridController.gridWidth;
         this.gridHeight = gridController.gridHeight;
         timer = timerStart;
-    }
-	
-	/// <summary>
-	/// Adds a block once the timer is finished and restarts the timer
-	/// </summary>
-	void Update () 
-    {
-        if (timer <= 0)
+
+        switch(character)
         {
-            AddBlocks();
-            timer = timerStart;
+            case CharSelectControl.ChosenCharacter.Character1:
+                player = players[0];
+                break;
+            case CharSelectControl.ChosenCharacter.Character2:
+                player = players[1];
+                break;
+            case CharSelectControl.ChosenCharacter.Character3:
+                player = players[2];
+                break;
         }
-        timer -= Time.deltaTime;
-	}
+
+        //Inst(player);
+    }
 
     /// <summary>
-    /// Adds a block to a random x location off the screen
+    /// Adds a block once the timer is finished and restarts the timer
     /// </summary>
-    void AddBlocks()
+    void Update()
     {
-        int rand = Random.Range(0, gridWidth);
-        int Y = gridHeight + 5; //need to change this to a editable variable
+        bool isSpot = false;
+        for (int i = 0; i < gridWidth; i++)
+        {
+            GameObject testBlock = gridController.grid[gridHeight - 1, i];
+            if (testBlock == null)
+            {
+                isSpot = true;
+            }
+        }
 
-        Vector3 placement = gridController.ConvertToWorld(rand, Y);
-        GetComponent<gridController>().InstBlock(placement);
+        if (timer <= 0 && isSpot)
+        {
+            GetComponent<BoardCreation>().ChooseBlocks();
+            timer = timerStart;
+        }
+
+      
+        prevPress = Input.GetAxis("Submit");
+
+        timer -= Time.deltaTime;
     }
 
-    //This method isn't complete
+    /// <summary>
+    /// Adds a player onto the screen
+    /// </summary>
+    /// <param name="player">The player game object being instantiated</param>
+    //void Inst(GameObject player)
+    //{
+    //    GameObject newPlayer = (GameObject)Instantiate(player, playerPos, Quaternion.identity);
+    //}
+
+    //This method isn't complete (If time convert to ray casting)
+
     /// <summary>
     /// Checks surrounding blocks for matching colors
     /// </summary>
@@ -68,32 +114,95 @@ public class gameController : MonoBehaviour {
     ArrayList CheckBlocks(int X, int Y)
     {
         ArrayList matchBlocks = new ArrayList();
-        GameObject block = gridController.grid[Y, X];
-        GameObject blockUp = gridController.grid[Y + 1, X];
-        GameObject blockDown = gridController.grid[Y - 1, X];
-        GameObject blockLeft = gridController.grid[Y, X - 1];
-        GameObject blockRight = gridController.grid[Y, X + 1];
-        string blockColor = gridController.grid[Y, X].GetComponent<BlockColor>().color;
+        GameObject[,] copyGrid = gridController.grid;
+        GameObject block = copyGrid[Y, X];
+        string blockColor = null;
 
+        blockColor = block.GetComponent<BlockColor>().color;
         matchBlocks.Add(block);
-        //When introducing Hazards we will have to add another statement here to damage those as well when a block around it is being hit.
-        //This also needs to check more than just the surrounding blocks
-        if (blockUp.GetComponent<BlockColor>().color == blockColor)
+        //When introducing Hazards we will have to add another statement to damage those as well when a block around it is being hit.
+        for (int i = 0; i <= matchBlocks.Count - 1; i++)
         {
-            matchBlocks.Add(blockUp);
-        }
-        if (blockDown.GetComponent<BlockColor>().color == blockColor)
-        {
-            matchBlocks.Add(blockDown);
-        }
-        if (blockLeft.GetComponent<BlockColor>().color == blockColor)
-        {
-            matchBlocks.Add(blockLeft);
-        }
-        if (blockRight.GetComponent<BlockColor>().color == blockColor)
-        {
-            matchBlocks.Add(blockRight);
+            block = (GameObject)matchBlocks[i];
+            int gridX = block.GetComponent<Block>().gridX;
+            int gridY = block.GetComponent<Block>().gridY;
+            GameObject blockUp = BlockExists(gridX, gridY + 1, matchBlocks);
+            GameObject blockDown = BlockExists( gridX, gridY - 1 ,matchBlocks);
+            GameObject blockRight = BlockExists( gridX + 1, gridY, matchBlocks);
+            GameObject blockLeft = BlockExists( gridX - 1, gridY, matchBlocks);
+
+            if (blockUp != null && blockUp.GetComponent<Block>().type == "hazard" || blockUp != null && blockUp.GetComponent<BlockColor>().color == blockColor)
+            {
+                matchBlocks.Add(copyGrid[gridY + 1, gridX]);
+            }
+            if (blockDown != null && blockDown.GetComponent<Block>().type == "hazard" || blockDown != null && blockDown.GetComponent<BlockColor>().color == blockColor)
+            {
+                matchBlocks.Add(copyGrid[gridY - 1, gridX]);
+            }
+            if (blockRight != null && blockRight.GetComponent<Block>().type == "hazard" || blockRight != null && blockRight.GetComponent<BlockColor>().color == blockColor)
+            {
+                matchBlocks.Add(copyGrid[gridY, gridX + 1]);
+            }
+            if (blockLeft != null && blockLeft.GetComponent<Block>().type == "hazard" || blockLeft != null && blockLeft.GetComponent<BlockColor>().color == blockColor)
+            {
+                matchBlocks.Add(copyGrid[gridY, gridX - 1]);
+            }
         }
         return matchBlocks;
+    }
+
+    /// <summary>
+    /// Checks to see if the block being checked is part of the grid and if the block is already part of the matchblocks array
+    /// </summary>
+    /// <param name="gridX">The grid x-position being checked</param>
+    /// <param name="gridY">The grid y-position being checked</param>
+    /// <param name="matchBlocks"></param>
+    /// <returns>null if the block is already in the matchblocks array and the block being checked if the block isn't in the array</returns>
+    GameObject BlockExists(int gridX, int gridY, ArrayList matchBlocks)
+    {
+        int YMax = gridController.gridHeight;
+        int XMax = gridController.gridWidth;
+        bool inArray = false;
+
+        if (gridX < XMax && gridX > -1 && gridY < YMax && gridY > -1)
+        {
+            GameObject block = gridController.grid[gridY, gridX];
+            for (int j = 0; j <= matchBlocks.Count - 1; j++)
+            {
+                GameObject prevBlock = (GameObject)matchBlocks[j];
+                int prevBlockX = prevBlock.GetComponent<Block>().gridX;
+                int prevBlockY = prevBlock.GetComponent<Block>().gridY;
+                if (gridX == prevBlockX && !inArray)
+                {
+                    if (gridY == prevBlockY)
+                    {
+                        inArray = true;
+                    }
+                    
+                }
+            }
+
+            if(!inArray)
+            {
+                return block;
+            }
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// Function to destroy a block and any matching blocks linked to it.
+    /// </summary>
+    /// <param name="X"> The block's X position in the grid. </param>
+    /// <param name="Y"> The block's Y position in the grid. </param>
+    public void DestroyBlocks(int X, int Y) {
+        //Testing statment will delete later
+            ArrayList matchBlocks = CheckBlocks(X, Y);
+            for (int i = 0; i < matchBlocks.Count; i++) {
+                GameObject block = (GameObject)matchBlocks[i];
+                gridController.removeFromGrid(block.GetComponent<Block>().gridY, block.GetComponent<Block>().gridX);
+                Destroy(block.gameObject);
+            }
+        
     }
 }

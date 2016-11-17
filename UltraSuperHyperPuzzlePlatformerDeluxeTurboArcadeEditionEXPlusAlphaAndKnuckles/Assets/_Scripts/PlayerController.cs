@@ -1,13 +1,32 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+public enum Character {
+    NORMAL,
+    KNUCKLES,
+    NINJA
+}
+
 public class PlayerController : MonoBehaviour {
+
+   
+
+    /// <summary>
+    /// Enum used to determine what character the player is.
+    /// </summary>
+    public Character character = Character.NORMAL;
+
+
     public float gravity = 10;
     public float speed = 10;
     public float jumpHeight = 15;
     public float groundDetectDistance = 1;
 
     public LayerMask layerMask;
+
+    public RuntimeAnimatorController playerANIM;
+    public RuntimeAnimatorController knucklANIM;
+    public RuntimeAnimatorController ninjaANIM;
 
     Rigidbody2D body;
     Animator anim;
@@ -20,6 +39,15 @@ public class PlayerController : MonoBehaviour {
         body = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         sprite = GetComponent<SpriteRenderer>();
+
+        if (gameController.character == CharSelectControl.ChosenCharacter.Character1) character = Character.NORMAL;
+        if (gameController.character == CharSelectControl.ChosenCharacter.Character2) character = Character.KNUCKLES;
+        if (gameController.character == CharSelectControl.ChosenCharacter.Character3) character = Character.NINJA;
+
+        if (character == Character.NORMAL) anim.runtimeAnimatorController = playerANIM;
+        if (character == Character.KNUCKLES) anim.runtimeAnimatorController = knucklANIM;
+        if (character == Character.NINJA) anim.runtimeAnimatorController = ninjaANIM;
+
     }
 	
 	// Update is called once per frame
@@ -44,6 +72,8 @@ public class PlayerController : MonoBehaviour {
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, groundDetectDistance, layerMask);
         if (hit.collider != null)
         {
+			if (hit.collider.gameObject.tag == "Spike")Destroy (gameObject);
+
             position.y = hit.transform.position.y + .9f;
             grounded = true;
             ySpeed = 0;

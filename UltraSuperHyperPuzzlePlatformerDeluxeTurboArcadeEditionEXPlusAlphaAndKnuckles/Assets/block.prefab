@@ -9,13 +9,15 @@ GameObject:
   m_Component:
   - 4: {fileID: 405268}
   - 212: {fileID: 21298330}
-  - 114: {fileID: 11442186}
   - 61: {fileID: 6155798}
   - 50: {fileID: 5082930}
-  - 114: {fileID: 114000014169403520}
-  m_Layer: 0
+  - 114: {fileID: 11442186}
+  - 114: {fileID: 114000013794368640}
+  - 114: {fileID: 114000010629524156}
+  - 95: {fileID: 95000013358959102}
+  m_Layer: 8
   m_Name: block
-  m_TagString: Untagged
+  m_TagString: Block
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -72,14 +74,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 187328}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 669e0b4ef19fed646990295698e0a4ce, type: 3}
+  m_Script: {fileID: 11500000, guid: 96cf890437e1d9e4b8e3cc30aa347fc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blockColor:
-  - {r: 1, g: 0, b: 1, a: 1}
-  - {r: 0, g: 1, b: 0, a: 1}
-  - {r: 0, g: 0, b: 1, a: 1}
-  color: 
+  gravity: 0.01
+  fall: 1
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 256
+  collider: {fileID: 0}
 --- !u!212 &21298330
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -124,7 +127,24 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 187328}
   m_IsPrefabParent: 1
---- !u!114 &114000014169403520
+--- !u!95 &95000013358959102
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 187328}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5fafd2154a999fa43b082ade457cfc37, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114000010629524156
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -132,8 +152,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 187328}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c4d746fe028ec8418d0d3049ec96832, type: 3}
+  m_Script: {fileID: 11500000, guid: a9ba30e61f6a96b4dbf66b690b78342c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gravity: 0.01
-  fall: 1
+  blockColor:
+  - {r: 1, g: 0, b: 1, a: 1}
+  - {r: 0, g: 1, b: 0, a: 1}
+  - {r: 0, g: 0, b: 1, a: 1}
+  color: 
+--- !u!114 &114000013794368640
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 187328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfc891014ed2d91468df66d2d2668398, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gridX: 0
+  gridY: 0
+  type: 
+  health: 10

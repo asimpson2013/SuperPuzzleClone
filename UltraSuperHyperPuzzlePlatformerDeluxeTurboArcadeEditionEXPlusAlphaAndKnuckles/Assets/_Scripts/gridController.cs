@@ -4,12 +4,18 @@ using System.Collections;
 /// <summary>
 /// Controls the grid
 /// </summary>
-public class gridController : MonoBehaviour {
+public class gridController : MonoBehaviour
+{
 
+    #region Static Variables
     /// <summary>
     /// refrence to the block sprite
     /// </summary>
     public GameObject block;
+    /// <summary>
+    /// The pixel measurement per one unit.
+    /// </summary>
+    static float perUnit;
     /// <summary>
     /// A two dimensional array that stores blocks in a grid
     /// </summary>
@@ -17,11 +23,11 @@ public class gridController : MonoBehaviour {
     /// <summary>
     /// The width of the grid by the number of blocks
     /// </summary>
-    public static int gridWidth = 5;
+    public static int gridWidth = 9;
     /// <summary>
     /// The height of the grid by the number of blocks
     /// </summary>
-    public static int gridHeight = 5;
+    public static int gridHeight = 13;
     /// <summary>
     /// The width of the block in meters
     /// </summary>
@@ -38,58 +44,71 @@ public class gridController : MonoBehaviour {
     /// Where the blocks start on the screen in the y direction
     /// </summary>
     static float startY = -2;
+    #endregion
 
     #region public vars
-    //Unsure if we will keep these so they are staying uncommented
+    /// <summary>
+    /// The starting grid width
+    /// </summary>
     public int startWidth = 9;
+    /// <summary>
+    /// The starting grid height
+    /// </summary>
     public int startHeight = 1;
-    public float pblockWidth = 0;
-    public float pblockHeight = 0;
+    /// <summary>
+    /// how many pixels are in a unit
+    /// </summary>
+    public float pixelsPerUnit = 32;
+    /// <summary>
+    /// The starting X location of the grid
+    /// </summary>
     public float pstartX = 0;
+    /// <summary>
+    /// The starting Y location of the grid
+    /// </summary>
     public float pstartY = 0;
+    /// <summary>
+    /// The grid width
+    /// </summary>
     public int pgridWidth = 0;
+    /// <summary>
+    /// The grid height
+    /// </summary>
     public int pgridHeight = 0;
     #endregion
 
     /// <summary>
-	/// Adds a grid to the scene
-	/// </summary>
-	void Start () 
+    /// Adds a grid to the scene
+    /// </summary>
+    void Start()
     {
         gridWidth = pgridWidth;
         gridHeight = pgridHeight;
-        blockWidth = pblockWidth;
-        blockHeight = pblockHeight;
+        perUnit = pixelsPerUnit;
+        blockWidth = block.GetComponent<SpriteRenderer>().sprite.rect.size.x;
+        blockHeight = block.GetComponent<SpriteRenderer>().sprite.rect.size.y;
         startX = pstartX;
         startY = pstartY;
         grid = new GameObject[gridHeight, gridWidth];
         CreateGrid();
-	}
+    }
 
     /// <summary>
     /// Makes a grid of blocks and instantiates it
     /// </summary>
     void CreateGrid()
     {
-        for (int y = 0; y < startWidth; y++)
+        for (int y = 0; y < startHeight; y++)
         {
-            for (int x = 0; x < startHeight; x++)
+            for (int x = 0; x < startWidth; x++)
             {
                 Vector3 placement = ConvertToWorld(x, y);
                 GameObject newBlock = (GameObject)Instantiate(block, placement, Quaternion.identity);
+                newBlock.GetComponent<Block>().type = "block";
                 newBlock.GetComponent<FallBlock>().fall = false;
                 grid[y, x] = newBlock;
             }
         }
-    }
-
-    /// <summary>
-    /// Adds a block to the scene
-    /// </summary>
-    /// <param name="placement">The place the block spawns</param>
-    public void InstBlock(Vector3 placement)
-    {
-        GameObject newBlock = (GameObject)Instantiate(block, placement, Quaternion.identity);
     }
 
     /// <summary>
@@ -103,6 +122,31 @@ public class gridController : MonoBehaviour {
         grid[y, x] = block;
     }
 
+    /// <summary>
+    /// Removes a gameobject from the grid array
+    /// </summary>
+    /// <param name="Y">The y position of the object in the grid</param>
+    /// <param name="X">The x position of the object in the grid</param>
+    public static void removeFromGrid(int Y, int X)
+    {
+        for (int i = 0; i < gridHeight; i++ )
+        {
+            grid[i, X] = null;
+        }
+        GameObject[,] newGrid = new GameObject[gridHeight, gridWidth];
+        for (int y = 0; y < gridHeight; y++)
+        {
+            for (int x = 0; x < gridWidth; x++)
+            {
+                if (grid[y, x] != null)
+                {
+                    newGrid[y, x] = grid[y, x];
+                }
+            }
+        }
+        grid = newGrid;
+    }
+
     #region Conversions
     /// <summary>
     /// Converts the grid coordinates to world coordinates
@@ -112,8 +156,8 @@ public class gridController : MonoBehaviour {
     /// <returns>The world point equivalent to the grid point</returns>
     public static Vector3 ConvertToWorld(int X, int Y)
     {
-        float worldX = startX + (X * blockWidth / 2f);
-        float worldY = startY + (Y * blockHeight / 2f);
+        float worldX = startX + (X * (blockWidth / perUnit));
+        float worldY = startY + (Y * (blockHeight / blockHeight));
         Vector3 worldCoord = new Vector3(worldX, worldY, 0);
         return worldCoord;
     }
@@ -126,8 +170,8 @@ public class gridController : MonoBehaviour {
     /// <returns>The grid point equivalent to the world point</returns>
     public static Vector2 ConvertToGrid(float worldX, float worldY)
     {
-        int X = (int)Mathf.Ceil((worldX / (blockWidth) * 2f) - startX);
-        int Y = (int)Mathf.Ceil((worldY / (blockHeight) * 2f) - startY);
+        int X = (int)Mathf.Round((worldX / (blockWidth / perUnit)) - startX);
+        int Y = (int)Mathf.Round((worldY / (blockHeight / perUnit)) - startY);
         Vector2 gridCoord = new Vector2(X, Y);
         return gridCoord;
     }

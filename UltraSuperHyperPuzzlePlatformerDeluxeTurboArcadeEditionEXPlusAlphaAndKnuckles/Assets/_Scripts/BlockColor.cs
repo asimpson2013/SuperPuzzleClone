@@ -15,6 +15,7 @@ public class BlockColor : MonoBehaviour {
     /// </summary>
     public string color;
 
+
     /// <summary>
     /// Picks the color of the block and gets the grid index of the block
     /// </summary>
